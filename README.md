@@ -109,11 +109,91 @@ Spine устройств, обеспечивающих связность ниж
 **S1**
 
 ```
+hostname S1
+!
+interface Ethernet1
+   description <leaf L1>
+   no switchport
+   ip address 10.1.1.1/30
+   isis enable UNDERLAY
+   isis network point-to-point
+!
+interface Ethernet2
+   description <leaf L2>
+   no switchport
+   ip address 10.1.2.1/30
+   isis enable UNDERLAY
+   isis network point-to-point
+!
+interface Ethernet3
+   description <leaf L3>
+   no switchport
+   ip address 10.1.3.1/30
+   isis enable UNDERLAY
+   isis network point-to-point
+!
+interface Loopback0
+   ip address 172.16.1.1/32
+   isis enable UNDERLAY
+   isis passive
+!
+ip routing
+!
+router isis UNDERLAY
+   net 49.0001.1720.1600.1001.00
+   is-type level-1
+   log-adjacency-changes
+   authentication key-id 1 algorithm sha-1 key 7 A2O7IiVS99Y=
+   !
+   address-family ipv4 unicast
+      bfd all-interfaces
+!
+end
 ```
 
 **S2**
 
 ```
+hostname S2
+!
+interface Ethernet1
+   description <leaf L1>
+   no switchport
+   ip address 10.2.1.1/30
+   isis enable UNDERLAY
+   isis network point-to-point
+!
+interface Ethernet2
+   description <leaf L2>
+   no switchport
+   ip address 10.2.2.1/30
+   isis enable UNDERLAY
+   isis network point-to-point
+!
+interface Ethernet3
+   description <leaf L3>
+   no switchport
+   ip address 10.2.3.1/30
+   isis enable UNDERLAY
+   isis network point-to-point
+!
+interface Loopback0
+   ip address 172.16.2.1/32
+   isis enable UNDERLAY
+   isis passive
+!
+ip routing
+!
+router isis UNDERLAY
+   net 49.0001.1720.1600.2001.00
+   is-type level-1
+   log-adjacency-changes
+   authentication key-id 1 algorithm sha-1 key 7 A2O7IiVS99Y=
+   !
+   address-family ipv4 unicast
+      bfd all-interfaces
+!
+end
 ```
 
 #### Leaf устройства
@@ -121,16 +201,146 @@ Spine устройств, обеспечивающих связность ниж
 **L1**
 
 ```
+hostname L1
+!
+interface Ethernet1
+   description <spine S1>
+   no switchport
+   ip address 10.1.1.2/30
+   isis enable UNDERLAY
+   isis network point-to-point
+!
+interface Ethernet2
+   description <spine S2>
+   no switchport
+   ip address 10.2.1.2/30
+   isis enable UNDERLAY
+   isis network point-to-point
+!
+interface Ethernet8
+   description <PC11>
+   no switchport
+   ip address 192.168.1.1/24
+   isis enable UNDERLAY
+   isis passive
+!
+interface Loopback0
+   ip address 172.16.11.1/32
+   isis enable UNDERLAY
+   isis passive
+!
+ip routing
+!
+router isis UNDERLAY
+   net 49.0001.1720.1601.1001.00
+   is-type level-1
+   log-adjacency-changes
+   authentication key-id 1 algorithm sha-1 key 7 A2O7IiVS99Y=
+   !
+   address-family ipv4 unicast
+      bfd all-interfaces
+!
+end
 ```
 
 **L2**
 
 ```
+hostname L2
+!
+interface Ethernet1
+   description <spine S1>
+   no switchport
+   ip address 10.1.2.2/30
+   isis enable UNDERLAY
+   isis network point-to-point
+!
+interface Ethernet2
+   description <spine S2>
+   no switchport
+   ip address 10.2.2.2/30
+   isis enable UNDERLAY
+   isis network point-to-point
+!
+interface Ethernet8
+   description <PC21>
+   no switchport
+   ip address 192.168.2.1/24
+   isis enable UNDERLAY
+   isis passive
+!
+interface Loopback0
+   ip address 172.16.12.1/32
+   isis enable UNDERLAY
+   isis passive
+!
+ip routing
+!
+router isis UNDERLAY
+   net 49.0001.1720.1601.2001.00
+   is-type level-1
+   log-adjacency-changes
+   authentication key-id 1 algorithm sha-1 key 7 A2O7IiVS99Y=
+   !
+   address-family ipv4 unicast
+      bfd all-interfaces
+!
+end
 ```
 
 **L3**
 
 ```
+hostname L3
+!
+vlan 3
+   name users
+!
+interface Ethernet1
+   description <spine S1>
+   no switchport
+   ip address 10.1.3.2/30
+   isis enable UNDERLAY
+   isis network point-to-point
+!
+interface Ethernet2
+   description <spine S2>
+   no switchport
+   ip address 10.2.3.2/30
+   isis enable UNDERLAY
+   isis network point-to-point
+!
+interface Ethernet7
+   description <PC31>
+   switchport access vlan 3
+!
+interface Ethernet8
+   description <PC32>
+   switchport access vlan 3
+!
+interface Loopback0
+   ip address 172.16.13.1/32
+   isis enable UNDERLAY
+   isis passive
+!
+interface Vlan3
+   description <User`s VLAN>
+   ip address 192.168.3.1/24
+   isis enable UNDERLAY
+   isis passive
+!
+ip routing
+!
+router isis UNDERLAY
+   net 49.0001.1720.1601.3001.00
+   is-type level-1
+   log-adjacency-changes
+   authentication key-id 1 algorithm sha-1 key 7 A2O7IiVS99Y=
+   !
+   address-family ipv4 unicast
+      bfd all-interfaces
+!
+end
 ```
 
 ## Описание типовых настроек
