@@ -117,6 +117,9 @@ interface Ethernet1
    ip address 10.1.1.1/30
    isis enable UNDERLAY
    isis network point-to-point
+   isis authentication mode md5
+   isis authentication key 7 ZxTrj2C9xWU=
+
 !
 interface Ethernet2
    description <leaf L2>
@@ -124,6 +127,9 @@ interface Ethernet2
    ip address 10.1.2.1/30
    isis enable UNDERLAY
    isis network point-to-point
+   isis authentication mode md5
+   isis authentication key 7 ZxTrj2C9xWU=
+
 !
 interface Ethernet3
    description <leaf L3>
@@ -131,6 +137,9 @@ interface Ethernet3
    ip address 10.1.3.1/30
    isis enable UNDERLAY
    isis network point-to-point
+   isis authentication mode md5
+   isis authentication key 7 ZxTrj2C9xWU=
+
 !
 interface Loopback0
    ip address 172.16.1.1/32
@@ -143,7 +152,8 @@ router isis UNDERLAY
    net 49.0001.1720.1600.1001.00
    is-type level-1
    log-adjacency-changes
-   authentication key-id 1 algorithm sha-1 key 7 A2O7IiVS99Y=
+   authentication mode md5
+   authentication key 7 ZxTrj2C9xWU=
    !
    address-family ipv4 unicast
       bfd all-interfaces
@@ -162,6 +172,9 @@ interface Ethernet1
    ip address 10.2.1.1/30
    isis enable UNDERLAY
    isis network point-to-point
+   isis authentication mode md5
+   isis authentication key 7 ZxTrj2C9xWU=
+
 !
 interface Ethernet2
    description <leaf L2>
@@ -169,6 +182,8 @@ interface Ethernet2
    ip address 10.2.2.1/30
    isis enable UNDERLAY
    isis network point-to-point
+   isis authentication mode md5
+   isis authentication key 7 ZxTrj2C9xWU=
 !
 interface Ethernet3
    description <leaf L3>
@@ -176,6 +191,8 @@ interface Ethernet3
    ip address 10.2.3.1/30
    isis enable UNDERLAY
    isis network point-to-point
+   isis authentication mode md5
+   isis authentication key 7 ZxTrj2C9xWU=
 !
 interface Loopback0
    ip address 172.16.2.1/32
@@ -188,7 +205,8 @@ router isis UNDERLAY
    net 49.0001.1720.1600.2001.00
    is-type level-1
    log-adjacency-changes
-   authentication key-id 1 algorithm sha-1 key 7 A2O7IiVS99Y=
+   authentication mode md5
+   authentication key 7 ZxTrj2C9xWU=
    !
    address-family ipv4 unicast
       bfd all-interfaces
@@ -209,6 +227,8 @@ interface Ethernet1
    ip address 10.1.1.2/30
    isis enable UNDERLAY
    isis network point-to-point
+   isis authentication mode md5
+   isis authentication key 7 ZxTrj2C9xWU=
 !
 interface Ethernet2
    description <spine S2>
@@ -216,6 +236,8 @@ interface Ethernet2
    ip address 10.2.1.2/30
    isis enable UNDERLAY
    isis network point-to-point
+   isis authentication mode md5
+   isis authentication key 7 ZxTrj2C9xWU=
 !
 interface Ethernet8
    description <PC11>
@@ -235,7 +257,8 @@ router isis UNDERLAY
    net 49.0001.1720.1601.1001.00
    is-type level-1
    log-adjacency-changes
-   authentication key-id 1 algorithm sha-1 key 7 A2O7IiVS99Y=
+   authentication mode md5
+   authentication key 7 ZxTrj2C9xWU=
    !
    address-family ipv4 unicast
       bfd all-interfaces
@@ -254,6 +277,8 @@ interface Ethernet1
    ip address 10.1.2.2/30
    isis enable UNDERLAY
    isis network point-to-point
+   isis authentication mode md5
+   isis authentication key 7 ZxTrj2C9xWU=
 !
 interface Ethernet2
    description <spine S2>
@@ -261,6 +286,8 @@ interface Ethernet2
    ip address 10.2.2.2/30
    isis enable UNDERLAY
    isis network point-to-point
+   isis authentication mode md5
+   isis authentication key 7 ZxTrj2C9xWU=
 !
 interface Ethernet8
    description <PC21>
@@ -280,7 +307,8 @@ router isis UNDERLAY
    net 49.0001.1720.1601.2001.00
    is-type level-1
    log-adjacency-changes
-   authentication key-id 1 algorithm sha-1 key 7 A2O7IiVS99Y=
+   authentication mode md5
+   authentication key 7 ZxTrj2C9xWU=
    !
    address-family ipv4 unicast
       bfd all-interfaces
@@ -302,6 +330,8 @@ interface Ethernet1
    ip address 10.1.3.2/30
    isis enable UNDERLAY
    isis network point-to-point
+   isis authentication mode md5
+   isis authentication key 7 ZxTrj2C9xWU=
 !
 interface Ethernet2
    description <spine S2>
@@ -309,6 +339,8 @@ interface Ethernet2
    ip address 10.2.3.2/30
    isis enable UNDERLAY
    isis network point-to-point
+   isis authentication mode md5
+   isis authentication key 7 ZxTrj2C9xWU=
 !
 interface Ethernet7
    description <PC31>
@@ -335,7 +367,8 @@ router isis UNDERLAY
    net 49.0001.1720.1601.3001.00
    is-type level-1
    log-adjacency-changes
-   authentication key-id 1 algorithm sha-1 key 7 A2O7IiVS99Y=
+   authentication mode md5
+   authentication key 7 ZxTrj2C9xWU=
    !
    address-family ipv4 unicast
       bfd all-interfaces
@@ -345,7 +378,17 @@ end
 
 ## Описание типовых настроек
 
+Разберем основные типовые настройки протокола IS-IS, используюмые на данном стенде. Первое ,что нам необзодимо сделать, это свормировать NET (Network Entity Title), состояего из:
+- Идентификатора (AFI): его в силу исторических причин примем равным 49
+- Номера области (Area ID): В силу небольшого размера стенда будем использовать единую область, что так же позволит использовать только Level 1 тип сообщений
+- Системный идентификатор (System ID): Свормируем его из Loopback адресов
+- Селектор: Примем его равным 0
 
+Шифрование: Хоть в данной лабораторной работе настолько полное шифрование является избыточным, однако в качестве примера приведем полный фикл шифрования Hello сообщений на интерфейсах,
+учавствующих в обмене данными сообщениями, а так же используем шифрования для LSP, CSNP, и PSNP сообщений.
+
+Так же включим глобальную воддержку протокола bfd, для ускорения детектирования сбоев в каналах.
+ 
 
 # Заключение
 
@@ -394,7 +437,6 @@ end
 **Таблица соседства IS-IS на коммутаторе L3**
 
 ![S1](images/neighbor_L3.jpg)
-
 
 
 Теперь проверм вязность сети с тестового конечного устройства PC11 на все IP адреса интерфейсов Loopback всех сеетвых устройств, а тек же на все конечные устройства в рамках
